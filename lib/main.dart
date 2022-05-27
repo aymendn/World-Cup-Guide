@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:last_app/page/onboarding_page.dart';
 
-void main() => runApp(MyApp());
+import 'screens/onboarding_screen.dart';
+
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  static final String title = 'Onboarding Example';
+  static const String title = 'Onboarding Example';
+
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: title,
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: OnBoardingPage(),
+        home: const OnboardingScreen(),
       );
 }
