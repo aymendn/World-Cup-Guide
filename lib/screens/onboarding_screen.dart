@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../modals/onboarding_data.dart';
+import '../widget/custom_button.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -9,13 +10,60 @@ class OnboardingScreen extends StatefulWidget {
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
+void openGoogle(context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          insetPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 200),
+          title: Row(
+            children: [
+              Image.asset(
+                'assets/images/google.png',
+                width: 20,
+                fit: BoxFit.fitWidth,
+              ),
+              const SizedBox(width: 10),
+              const Text('Sign in with Google'),
+              const Divider(),
+            ],
+          ),
+          content: Column(
+            children: [
+              const Text(
+                'Choose your account',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const Text('to continue to our app'),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: (() {
+                  Navigator.of(context).pushReplacementNamed('/home');
+                }),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                        child: Image.asset('assets/images/profile.png',
+                            width: 20, fit: BoxFit.fitWidth)),
+                    const SizedBox(width: 8),
+                    const Text('User@gmail.com'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      });
+}
+
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final _controller = PageController();
   int _currentPage = 0;
   List colors = [
-    const Color(0xffDAD3C8),
-    const Color(0xffFFE5DE),
-    const Color(0xffDCF6E6)
+    const Color.fromARGB(255, 78, 63, 40),
+    const Color.fromARGB(255, 68, 87, 109),
+    const Color.fromARGB(255, 78, 53, 47)
   ];
 
   AnimatedContainer _buildDots({int? index}) {
@@ -25,7 +73,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         borderRadius: BorderRadius.all(
           Radius.circular(50),
         ),
-        color: Color(0xFF000000),
+        color: Color.fromARGB(255, 253, 250, 250),
       ),
       margin: const EdgeInsets.only(right: 5),
       height: 10,
@@ -39,130 +87,125 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       backgroundColor: colors[_currentPage],
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 3,
-              child: PageView.builder(
-                controller: _controller,
-                onPageChanged: (value) => setState(() => _currentPage = value),
-                itemCount: contents.length,
-                itemBuilder: (context, i) {
-                  return Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          contents[i].image,
-                          height: 35,
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Text(
-                          contents[i].title,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontFamily: "Mulish",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 30,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          contents[i].desc,
-                          style: const TextStyle(
-                            fontFamily: "Mulish",
-                            fontWeight: FontWeight.w300,
-                            fontSize: 17,
-                          ),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      contents.length,
-                      (int index) => _buildDots(index: index),
-                    ),
+        child: PageView.builder(
+          controller: _controller,
+          onPageChanged: (value) => setState(() => _currentPage = value),
+          itemCount: contents.length,
+          itemBuilder: (context, i) {
+            return Stack(
+              children: [
+                Image.asset(
+                  contents[i].image,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.black,
+                          Color.fromARGB(197, 0, 0, 0),
+                          Colors.transparent
+                        ]),
                   ),
-                  _currentPage + 1 == contents.length
-                      ? Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 120, vertical: 25),
-                              textStyle: const TextStyle(fontSize: 14),
+                ),
+                Column(
+                  children: [
+                    const Spacer(),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              contents[i].title,
+                              style: const TextStyle(
+                                  fontSize: 26, fontWeight: FontWeight.bold),
                             ),
-                            child: const Text("START"),
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  _controller.jumpToPage(2);
-                                },
-                                style: TextButton.styleFrom(
-                                  elevation: 0,
-                                  textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                child: const Text(
-                                  "SKIP",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  _controller.nextPage(
-                                    duration: const Duration(milliseconds: 200),
-                                    curve: Curves.easeIn,
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
-                                  elevation: 0,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 25),
-                                  textStyle: const TextStyle(fontSize: 14),
-                                ),
-                                child: const Text("NEXT"),
-                              ),
-                            ],
-                          ),
-                        )
-                ],
-              ),
-            ),
-          ],
+                            const SizedBox(height: 30),
+                            buildDots(),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.2,
+                              child: _currentPage + 1 == contents.length
+                                  ? Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        CustomButton(
+                                          textSize: 20,
+                                          isIcon: true,
+                                          icon: Image.asset(
+                                              'assets/images/google.png',
+                                              height: 25),
+                                          text: 'Sign in With Google',
+                                          onPressed: () {
+                                            openGoogle(context);
+                                          },
+                                        ),
+                                        const SizedBox(height: 15),
+                                        CustomButton(
+                                          isBorder: true,
+                                          text: 'Continue as Guest',
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pushReplacementNamed('/home');
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  : Column(
+                                      children: [
+                                        const Spacer(),
+                                        buildNextSkip(),
+                                      ],
+                                    ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
         ),
+      ),
+    );
+  }
+
+  Row buildNextSkip() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CustomButton(
+          isBorder: true,
+          text: 'Skip',
+          onPressed: () {
+            _controller.jumpToPage(2);
+          },
+        ),
+        CustomButton(
+            onPressed: () {
+              _controller.nextPage(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeIn,
+              );
+            },
+            text: 'Next'),
+      ],
+    );
+  }
+
+  Row buildDots() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        contents.length,
+        (int index) => _buildDots(index: index),
       ),
     );
   }
