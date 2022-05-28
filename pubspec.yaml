@@ -48,6 +48,9 @@ dev_dependencies:
   shared_preferences: ^2.0.15
   flutter_native_splash: ^2.2.1
   introduction_screen: ^3.0.2
+  device_preview: ^1.1.0
+  url_launcher: ^6.1.2
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,6 +69,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/
+    - assets/images/stadiums/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -92,7 +96,7 @@ flutter:
   fonts:
     - family: Qatar
       fonts:
-        - asset: assets/fonts/Q-Medium.otf
+        - asset: assets/fonts/Q-Medium.ttf
         - asset: assets/fonts/Q-Bold.ttf
           weight: 600
         - asset: assets/fonts/Q-Heavy.ttf
