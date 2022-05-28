@@ -60,11 +60,6 @@ void openGoogle(context) {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final _controller = PageController();
   int _currentPage = 0;
-  List colors = [
-    const Color.fromARGB(255, 78, 63, 40),
-    const Color.fromARGB(255, 68, 87, 109),
-    const Color.fromARGB(255, 78, 53, 47)
-  ];
 
   AnimatedContainer _buildDots({int? index}) {
     return AnimatedContainer(
@@ -85,7 +80,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colors[_currentPage],
       body: SafeArea(
         child: PageView.builder(
           controller: _controller,
